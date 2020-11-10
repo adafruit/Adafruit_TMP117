@@ -33,11 +33,26 @@ void setup(void) {
   display.setTextColor(WHITE);
   display.setRotation(0);
 
-  tmp117.setHighThreshold(30.0);
+  // Set the enable flag below to see how the low temp limit can be used as a
+  // hysteresis value that defines the acceptable range for the temperature values where
+  // the high temp alert is not active
+  // tmp117.thermAlertModeEnabled(true);
+  Serial.print("Therm mode enabled: ");
+  if (tmp117.thermAlertModeEnabled()) {
+    Serial.println("True");
+  } else {
+    Serial.println("False");
+  }
+
+  // You may need to adjust these thresholds to fit the temperature range of where the test is
+  // being run to be able to see the alert status change.
+  tmp117.setHighThreshold(35.0);
   Serial.print("High threshold: "); Serial.println(tmp117.getHighThreshold(), 1);
-  tmp117.setLowThreshold(10.5);
+  tmp117.setLowThreshold(28.5);
   Serial.print("Low threshold: "); Serial.println(tmp117.getLowThreshold(), 1);
+
 }
+
 void loop() {
   display.clearDisplay();
   display.setCursor(0, 0);
@@ -51,7 +66,6 @@ void loop() {
   Serial.print("Temperature: ");
   Serial.print(temp.temperature);
   Serial.println(" degrees C");
-  Serial.println("");
 
   Serial.print("High temperature alert active:");
   if (alerts.high) {
@@ -66,6 +80,7 @@ void loop() {
   } else {
     Serial.println("False");
   }
+  Serial.println("");
 
   //       Print to OLED
   display.print("Tmp:");

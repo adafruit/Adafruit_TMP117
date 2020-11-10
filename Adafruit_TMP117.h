@@ -92,6 +92,9 @@ public:
   bool getEvent(sensors_event_t *temp);
   bool getAlerts(tmp117_alerts_t *alerts);
 
+  bool thermAlertModeEnabled(bool therm_enabled);
+  bool thermAlertModeEnabled(void);
+
   float getOffset(void);
   bool setOffset(float offset);
 
@@ -123,13 +126,6 @@ private:
 
 #endif
 
-// reset(self):
-// initialize(self):
-// temperature(self):
-// temperature_offset(self):
-// high_limit(self):
-// low_limit(self):
-// alert_status(self):
 // averaged_measurements(self):
 // measurement_mode(self):
 // measurement_delay(self):

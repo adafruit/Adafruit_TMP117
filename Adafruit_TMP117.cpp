@@ -294,6 +294,40 @@ bool Adafruit_TMP117::setOffset(float offset) {
     waitForData();
   return success;
 }
+
+/**
+ * @brief Enable or disable "THERM" alert mode
+ *
+ *
+ * WHen enabled, the 'low' alert will never trigger and acts in combination with
+ * the high threshold to determine the behavior of the high temperature alert.
+ *
+ * In "Therm" mode, the "high" temperature alert statys triggered until the
+ * measured temperature goes below the 'low' temperature threshold, allowing it
+ * to act like a hysteresis value to prevent thrashing around the threshold
+ * temperature.
+ *
+ * @param therm_enabled
+ * @return true:success false:failure
+ */
+bool Adafruit_TMP117::thermAlertModeEnabled(bool therm_enabled) {
+  Adafruit_BusIO_RegisterBits therm_enable_bit =
+      Adafruit_BusIO_RegisterBits(config_reg, 1, 4);
+  return therm_enable_bit.write(therm_enabled);
+}
+
+/**
+ * @brief Get the current enable status of the "THERM" alert mode
+ *
+ * @return true: Therm mode enabled
+ * @return false Normal high/low alert mode enabled
+ */
+bool Adafruit_TMP117::thermAlertModeEnabled(void) {
+  Adafruit_BusIO_RegisterBits therm_enable_bit =
+      Adafruit_BusIO_RegisterBits(config_reg, 1, 4);
+  return therm_enable_bit.read();
+}
+
 ///////////////////  Misc private methods //////////////////////////////
 void Adafruit_TMP117::waitForData(void) {
   while (!getDataReady()) {
