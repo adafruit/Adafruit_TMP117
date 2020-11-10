@@ -6,7 +6,7 @@
  *
  *  @section intro_sec Introduction
  *
- * 	I2C Driver for the Library for the TMP117 High-Accuract Temperature
+ * 	I2C Driver for the Library for the TMP117 High-Accurac Temperature
  * Sensor
  *
  * 	This is a library for the Adafruit TMP117 breakout:
@@ -326,6 +326,36 @@ bool Adafruit_TMP117::thermAlertModeEnabled(void) {
   Adafruit_BusIO_RegisterBits therm_enable_bit =
       Adafruit_BusIO_RegisterBits(config_reg, 1, 4);
   return therm_enable_bit.read();
+}
+
+/**
+ * @brief Read the current number of samples that are averaged to calculate the
+ * reported temperature
+ *
+ * @return tmp117_average_count_t The current average setting enum value
+ */
+tmp117_average_count_t Adafruit_TMP117::getAveragedSampleCount(void) {
+  Adafruit_BusIO_RegisterBits average_count_bits =
+      Adafruit_BusIO_RegisterBits(config_reg, 2, 5);
+  return average_count_bits.read();
+}
+
+/**
+ * @brief Set the number of raw measurements that are averaged into the reported
+ * temperature.
+ *
+ * Each sample read takes 15.5ms so the higher the number of averaged samples, the longer the amount
+ * of time between new measurements. For larger average counts the amount of time required for a new
+ * measurement will exceed the interval specified by `setReadDelay`
+ *
+ * @param count The `tmp117_average_count_t` that specifies the desired sample
+ * count
+ * @return true:success false:failure
+ */
+bool Adafruit_TMP117::setAveragedSampleCount(tmp117_average_count_t count) {
+  Adafruit_BusIO_RegisterBits average_count_bits =
+      Adafruit_BusIO_RegisterBits(config_reg, 2, 5);
+  return average_count_bits.write(count);
 }
 
 ///////////////////  Misc private methods //////////////////////////////

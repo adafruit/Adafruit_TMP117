@@ -72,9 +72,19 @@ typedef struct {
   bool data_ready; ///< Status of the data_ready alert
 } tmp117_alerts_t;
 
+/**
+ * @brief Options for setAveragedSampleCount
+ *
+ */
+typedef enum {
+  TMP117_AVERAGE_1X,
+  TMP117_AVERAGE_8X,
+  TMP117_AVERAGE_32X,
+  TMP117_AVERAGE_64X,
+} tmp117_average_count_t;
 /*!
  *    @brief  Class that stores state and functions for interacting with
- *            the TMP117 High-Accuract Temperature Sensor
+ *            the TMP117 High-Accuracy Temperature Sensor
  */
 class Adafruit_TMP117 {
 public:
@@ -94,6 +104,9 @@ public:
 
   bool thermAlertModeEnabled(bool therm_enabled);
   bool thermAlertModeEnabled(void);
+
+  tmp117_average_count_t getAveragedSampleCount(void);
+  bool setAveragedSampleCount(tmp117_average_count_t count);
 
   float getOffset(void);
   bool setOffset(float offset);
@@ -130,7 +143,3 @@ private:
 // measurement_mode(self):
 // measurement_delay(self):
 // take_single_measurememt(self):
-// alert_mode(self):
-// _set_mode_and_wait_for_measurement(self, mode):
-// _read_status(self):
-// _read_temperature(self):
