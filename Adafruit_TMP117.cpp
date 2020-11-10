@@ -94,68 +94,46 @@ bool Adafruit_TMP117::_init(int32_t sensor_id) {
     return false;
   }
   _sensorid_temp = sensor_id;
-
-  reset();
   // do any software reset or other initial setup
   config_reg =
       new Adafruit_BusIO_Register(i2c_dev, TMP117_CONFIGURATION, 2, MSBFIRST);
 
   temp_reg =
       new Adafruit_BusIO_Register(i2c_dev, TMP117_TEMP_DATA, 2, MSBFIRST);
-  // Set to highest rate
-  // setDataRate(TMP117_RATE_25_HZ);
+
+  reset();
 
   return true;
 }
 
+bool Adafruit_TMP117::getDataReady(void) {
+  readAlertsDRDY();
+  return (alert_drdy_flags & DRDY_FLAG) > 0;
+}
+
+void Adafruit_TMP117::readAlertsDRDY(void) {
+  Adafruit_BusIO_RegisterBits alert_drdy_bits =
+      Adafruit_BusIO_RegisterBits(config_reg, 3, 13);
+  alert_drdy_flags = alert_drdy_bits.read();
+}
+
+void Adafruit_TMP117::waitForData(void) {
+  while (!getDataReady()) {
+    delay(1);
+  }
+}
 /**
  * @brief Performs a software reset initializing registers to their power on
  * state
  *
  */
 void Adafruit_TMP117::reset(void) {
-  // _soft_reset = RWBit(_CONFIGURATION, 1, 2, False)
+  Adafruit_BusIO_RegisterBits sw_reset =
+      Adafruit_BusIO_RegisterBits(config_reg, 1, 1);
 
-  // def __init__(self, i2c_bus, address=_I2C_ADDR):
-
-  //     self.i2c_device = i2c_device.I2CDevice(i2c_bus, address)
-  //     if self._part_id != _DEVICE_ID_VALUE:
-  //         raise AttributeError("Cannot find a TMP117")
-  //     # currently set when `alert_status` is read, but not exposed
-  //     self.reset()
-  //     self.initialize()
-
-  // def reset(self):
-  //     """Reset the sensor to its unconfigured power-on state"""
-  //     self._soft_reset = True
-
-  // def initialize(self):
-  //     """Configure the sensor with sensible defaults. `initialize` is
-  //     primarily provided to be called after `reset`, however it can also be
-  //     used to easily set the sensor to a known configuration""" # Datasheet
-  //     specifies that reset will finish in 2ms however by default the first #
-  //     conversion will be averaged 8x and take 1s # TODO: sleep depending on
-  //     current averaging config
-  //     self._set_mode_and_wait_for_measurement(_CONTINUOUS_CONVERSION_MODE)  #
-  //     one shot time.sleep(1)
-
-  // Adafruit_BusIO_RegisterBits sw_reset =
-  //     Adafruit_BusIO_RegisterBits(config_reg, 1, 2);
-
-  // sw_reset.write(1);
-
-  //     """Configure the sensor with sensible defaults. `initialize` is
-  //     primarily provided to be
-  //     called after `reset`, however it can also be used to easily set the
-  //     sensor to a known configuration""" # Datasheet specifies that reset
-  //     will finish in 2ms however by default the first # conversion will be
-  //     averaged 8x and take 1s # TODO: sleep depending on current averaging
-  //     config
-  //     self._set_mode_and_wait_for_measurement(_CONTINUOUS_CONVERSION_MODE)  #
-  //     one shot time.sleep(1)
-  // while (sw_reset.read()) {
-  //   delay(1);
-  // }
+  sw_reset.write(1);
+  delay(2); // datasheet specifies 2ms for reset
+  waitForData();
 }
 
 /**
@@ -228,4 +206,24 @@ void Adafruit_TMP117::interruptsActiveLow(bool active_low) {
   Adafruit_BusIO_RegisterBits active_low_bit =
       Adafruit_BusIO_RegisterBits(config_reg, 1, 3);
   active_low_bit.write(active_low);
+}
+
+float Adafruit_TMP117::getOffset(void) {
+  Adafruit_BusIO_Register temp_offset_reg =
+      Adafruit_BusIO_Register(i2c_dev, TMP117_TEMP_OFFSET, 2, MSBFIRST);
+  return temp_offset_reg.read() * TMP117_RESOLUTION;
+}
+
+bool Adafruit_TMP117::setOffset(float offset) {
+  if ((offset > 256.0) || (offset < -256.0)) {
+    return false;
+  }
+  Adafruit_BusIO_Register temp_offset_reg =
+      Adafruit_BusIO_Register(i2c_dev, TMP117_TEMP_OFFSET, 2, MSBFIRST);
+  int16_t offset_lsb = (int16_t)round(offset / TMP117_RESOLUTION);
+
+  bool success = temp_offset_reg.write(offset_lsb);
+  if (success)
+    waitForData();
+  return success;
 }

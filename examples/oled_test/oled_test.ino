@@ -25,7 +25,7 @@ void setup(void) {
   }
   display.clearDisplay();
   display.display();
-  display.setTextSize(1);
+  display.setTextSize(2);
   display.setTextColor(WHITE);
   display.setRotation(0);
 }
@@ -38,6 +38,6 @@ void loop() {
   Serial.print("Temperature: ");Serial.print(temp.temperature);Serial.println(" degrees C");
   Serial.println("");
 
-  display.print("Temp: "); display.print(temp.temperature);display.println(" C");
+  display.print("Tmp:"); display.print(temp.temperature, 1);display.println(" C");
   display.display();
 }

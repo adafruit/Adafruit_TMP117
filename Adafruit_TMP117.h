@@ -37,6 +37,7 @@
 #define TMP117_DEVICE_ID 0x0F     ///< Device ID register
 #define WHOAMI_ANSWER 0x0117      ///< Correct 2-byte ID register value response
 
+#define DRDY_FLAG 0b001 ///< mask to check data ready flag
 #define TMP117_RESOLUTION                                                      \
   0.0078125f ///< Scalar to convert from LSB value to degrees C
 
@@ -73,16 +74,21 @@ public:
 
   void reset(void);
   void interruptsActiveLow(bool active_low);
+  bool getDataReady(void);
 
   tmp117_rate_t getDataRate(void);
 
   void setDataRate(tmp117_rate_t data_rate);
   bool getEvent(sensors_event_t *temp);
 
+  bool setOffset(float offset);
+  float getOffset(void);
+
 private:
   // void _read(void);
   bool _init(int32_t sensor_id);
-
+  uint8_t alert_drdy_flags =
+      0;               ///< Storage for self-cleared bits in config reg.
   float unscaled_temp; ///< Last reading's temperature (C) before scaling
 
   uint16_t _sensorid_temp; ///< ID number for temperature
@@ -92,6 +98,25 @@ private:
       NULL; ///< Pointer to config register object
   Adafruit_BusIO_Register *temp_reg =
       NULL; ///< Temperature register, used regularly
+
+  void readAlertsDRDY(void);
+  void waitForData(void);
 };
 
 #endif
+
+// reset(self):
+// initialize(self):
+// temperature(self):
+// temperature_offset(self):
+// high_limit(self):
+// low_limit(self):
+// alert_status(self):
+// averaged_measurements(self):
+// measurement_mode(self):
+// measurement_delay(self):
+// take_single_measurememt(self):
+// alert_mode(self):
+// _set_mode_and_wait_for_measurement(self, mode):
+// _read_status(self):
+// _read_temperature(self):
