@@ -344,9 +344,10 @@ tmp117_average_count_t Adafruit_TMP117::getAveragedSampleCount(void) {
  * @brief Set the number of raw measurements that are averaged into the reported
  * temperature.
  *
- * Each sample read takes 15.5ms so the higher the number of averaged samples, the longer the amount
- * of time between new measurements. For larger average counts the amount of time required for a new
- * measurement will exceed the interval specified by `setReadDelay`
+ * Each sample read takes 15.5ms so the higher the number of averaged samples,
+ * the longer the amount of time between new measurements. For larger average
+ * counts the amount of time required for a new measurement will exceed the
+ * interval specified by `setReadDelay`
  *
  * @param count The `tmp117_average_count_t` that specifies the desired sample
  * count
@@ -357,7 +358,32 @@ bool Adafruit_TMP117::setAveragedSampleCount(tmp117_average_count_t count) {
       Adafruit_BusIO_RegisterBits(config_reg, 2, 5);
   return average_count_bits.write(count);
 }
-
+/**
+ * @brief Get current setting for the minimum delay between calculated
+ * temperature reads.
+ *
+ * @return tmp117_delay_t The minimum time between new temperature measurements.
+ * This amount of time will be exceeded if the time required for the configured
+ * number of averaged reads is more than the delay setting.
+ */
+tmp117_delay_t Adafruit_TMP117::getReadDelay(void) {
+  Adafruit_BusIO_RegisterBits read_delay_bits =
+      Adafruit_BusIO_RegisterBits(config_reg, 3, 7);
+  return read_delay_bits.read();
+}
+/**
+ * @brief Set a new minimum delay between calculated reads
+ *
+ * @param delay The minimum time between new temperature `measurements as a
+ * tmp117_delay_t`. This amount of time will be exceeded if the time required
+ * for the configured number of averaged reads is more than the delay setting.
+ * @return true:success false:failure
+ */
+bool Adafruit_TMP117::setReadDelay(tmp117_delay_t delay) {
+  Adafruit_BusIO_RegisterBits read_delay_bits =
+      Adafruit_BusIO_RegisterBits(config_reg, 3, 7);
+  return read_delay_bits.write(delay);
+}
 ///////////////////  Misc private methods //////////////////////////////
 void Adafruit_TMP117::waitForData(void) {
   while (!getDataReady()) {

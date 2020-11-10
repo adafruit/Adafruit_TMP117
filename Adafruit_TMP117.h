@@ -82,6 +82,22 @@ typedef enum {
   TMP117_AVERAGE_32X,
   TMP117_AVERAGE_64X,
 } tmp117_average_count_t;
+
+/**
+ * @brief Options to specify the minimum delay between new measurements.
+ *
+ */
+typedef enum {
+  TMP117_DELAY_0_MS,
+  TMP117_DELAY_125_MS,
+  TMP117_DELAY_250_MS,
+  TMP117_DELAY_500_MS,
+  TMP117_DELAY_1000_MS,
+  TMP117_DELAY_4000_MS,
+  TMP117_DELAY_8000_MS,
+  TMP117_DELAY_16000_MS,
+} tmp117_delay_t;
+
 /*!
  *    @brief  Class that stores state and functions for interacting with
  *            the TMP117 High-Accuracy Temperature Sensor
@@ -117,6 +133,9 @@ public:
   float getHighThreshold(void);
   bool setHighThreshold(float high_threshold);
 
+  tmp117_delay_t getReadDelay(void);
+  bool setReadDelay(tmp117_delay_t delay);
+
 private:
   // void _read(void);
   bool _init(int32_t sensor_id);
@@ -139,7 +158,5 @@ private:
 
 #endif
 
-// averaged_measurements(self):
 // measurement_mode(self):
 // measurement_delay(self):
-// take_single_measurememt(self):

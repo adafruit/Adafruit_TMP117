@@ -29,6 +29,22 @@ void setup(void) {
   }
   Serial.println(" samples");
 
+  tmp117.setReadDelay(TMP117_DELAY_125_MS);
+  Serial.print("Interval between reads is at least ");
+  switch(tmp117.getReadDelay()){
+    case TMP117_DELAY_0_MS: Serial.print(0); break;
+    case TMP117_DELAY_125_MS: Serial.print(125); break;
+    case TMP117_DELAY_250_MS: Serial.print(250); break;
+    case TMP117_DELAY_500_MS: Serial.print(500); break;
+    case TMP117_DELAY_1000_MS: Serial.print(1000); break;
+    case TMP117_DELAY_4000_MS: Serial.print(4000); break;
+    case TMP117_DELAY_8000_MS: Serial.print(8000); break;
+    case TMP117_DELAY_16000_MS: Serial.print(16000); break;
+  }
+  Serial.println(" milliseconds");
+
+  Serial.println("");
+
 }
 void loop() {
 
