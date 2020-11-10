@@ -98,6 +98,36 @@ typedef enum {
   TMP117_DELAY_16000_MS,
 } tmp117_delay_t;
 
+/**
+ * @brief Options to set the measurement mode of the sensor
+ *
+ * In `TMP117_MODE_CONTINUOUS`, new measurements are read and available
+ * according to the interval determined by the number of averaged samples and
+ * the delay between reads.
+ *
+ * When the mode is `TMP117_MODE_SHUTDOWN` the sensor is placed in a low power
+ * state and new measurements are not taken until a different mode is set. In
+ * this mode, active circuitry within this sensor is deactivated, lowering the
+ * power consumption dramatically.
+ *
+ * When the mode is set to `TMP117_MODE_ONE_SHOT`, a single new measurement is
+ * calculated from the configured number of samples to be averaged and available
+ * as soon as the measurements are Complete.
+ *
+ * Once the new measurement is calculated and available, the sensor switches to
+ * `TMP117_MODE_SHUTDOWN` until `TMP117_MODE_ONE_SHOT` is set again to calculate
+ * a new measurement or the mode is switched to `TMP117_MODE_CONTINUOUS`.
+ *
+ * **NOTE:** This setting ignores the configured minimum delay between
+ * measurements.
+ *
+ */
+typedef enum {
+  TMP117_MODE_CONTINUOUS,
+  TMP117_MODE_SHUTDOWN,
+  TMP117_MODE_ONE_SHOT = 3, // skipping 0x2 which is a duplicate CONTINUOUS
+} tmp117_mode_t;
+
 /*!
  *    @brief  Class that stores state and functions for interacting with
  *            the TMP117 High-Accuracy Temperature Sensor
@@ -136,6 +166,9 @@ public:
   tmp117_delay_t getReadDelay(void);
   bool setReadDelay(tmp117_delay_t delay);
 
+  tmp117_mode_t getMeasurementMode(void);
+  bool setMeasurementMode(tmp117_mode_t mode);
+
 private:
   // void _read(void);
   bool _init(int32_t sensor_id);
@@ -159,4 +192,3 @@ private:
 #endif
 
 // measurement_mode(self):
-// measurement_delay(self):

@@ -384,6 +384,31 @@ bool Adafruit_TMP117::setReadDelay(tmp117_delay_t delay) {
       Adafruit_BusIO_RegisterBits(config_reg, 3, 7);
   return read_delay_bits.write(delay);
 }
+
+/**
+ * @brief Read the active measurement mode
+ *
+ * @return tmp117_mode_t The current measurement mode.
+ */
+tmp117_mode_t Adafruit_TMP117::getMeasurementMode(void) {
+  Adafruit_BusIO_RegisterBits mode_bits =
+      Adafruit_BusIO_RegisterBits(config_reg, 2, 10);
+  return mode_bits.read();
+}
+
+/**
+ * @brief Set a new measurement mode
+ *
+ * @param mode the new mode to set, a `tmp117_mode_t`. If `mode` is
+ * `TMP117_MODE_ONE_SHOT`, initiate a new reading before switching to
+ * `TMP117_MODE_SHUTDOWN`.
+ * @return true:success false:failure
+ */
+bool Adafruit_TMP117::setMeasurementMode(tmp117_mode_t mode) {
+  Adafruit_BusIO_RegisterBits mode_bits =
+      Adafruit_BusIO_RegisterBits(config_reg, 2, 10);
+  return mode_bits.write(mode);
+}
 ///////////////////  Misc private methods //////////////////////////////
 void Adafruit_TMP117::waitForData(void) {
   while (!getDataReady()) {
