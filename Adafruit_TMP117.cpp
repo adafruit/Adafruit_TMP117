@@ -106,22 +106,6 @@ bool Adafruit_TMP117::_init(int32_t sensor_id) {
   return true;
 }
 
-bool Adafruit_TMP117::getDataReady(void) {
-  readAlertsDRDY();
-  return (alert_drdy_flags & DRDY_FLAG) > 0;
-}
-
-void Adafruit_TMP117::readAlertsDRDY(void) {
-  Adafruit_BusIO_RegisterBits alert_drdy_bits =
-      Adafruit_BusIO_RegisterBits(config_reg, 3, 13);
-  alert_drdy_flags = alert_drdy_bits.read();
-}
-
-void Adafruit_TMP117::waitForData(void) {
-  while (!getDataReady()) {
-    delay(1);
-  }
-}
 /**
  * @brief Performs a software reset initializing registers to their power on
  * state
@@ -134,6 +118,109 @@ void Adafruit_TMP117::reset(void) {
   sw_reset.write(1);
   delay(2); // datasheet specifies 2ms for reset
   waitForData();
+}
+
+/**************************************************************************/
+/*!
+    @brief  Gets the pressure sensor and temperature values as sensor events
+
+    @param  temp Sensor event object that will be populated with temp data
+    @returns True
+*/
+/**************************************************************************/
+bool Adafruit_TMP117::getEvent(sensors_event_t *temp) {
+  uint32_t t = millis();
+
+  readAlertsDRDY();
+
+  // Temp reg will report old value until new value is ready; "clears" on new
+  // data ready
+  unscaled_temp = (int16_t)temp_reg->read();
+
+  // use helpers to fill in the events
+  memset(temp, 0, sizeof(sensors_event_t));
+  temp->version = sizeof(sensors_event_t);
+  temp->sensor_id = _sensorid_temp;
+  temp->type = SENSOR_TYPE_AMBIENT_TEMPERATURE;
+  temp->timestamp = t;
+  temp->temperature = (unscaled_temp * TMP117_RESOLUTION);
+  return true;
+}
+
+/**
+ * @brief Get the current state of the alert flags
+ *
+ * **NOTE:** Because the high/low temperature status is based on temperature
+ * data, their status returned by this method is only updated when new
+ * temperature data is available. This ensures that the reported value is based
+ * on temperature data and not a cleared but not updated alert status.
+ *
+ * @param alerts Pointer to an alerts struct to be filled with the trigger
+ * status of the alerts
+ * @return true:success false: failure
+ */
+bool Adafruit_TMP117::getAlerts(tmp117_alerts_t *alerts) {
+  readAlertsDRDY();
+  memset(alerts, 0, sizeof(tmp117_alerts_t));
+  alerts->high = alert_drdy_flags.high;
+  alerts->low = alert_drdy_flags.low;
+  alerts->data_ready = alert_drdy_flags.data_ready;
+
+  return true;
+}
+
+/**
+ * @brief Read the current low temperature threshold
+ *
+ * @return float The current low temperature threshold in degrees C
+ */
+float Adafruit_TMP117::getLowThreshold(void) {
+  Adafruit_BusIO_Register low_threshold_reg =
+      Adafruit_BusIO_Register(i2c_dev, TMP117_T_LOW_LIMIT, 2, MSBFIRST);
+
+  return (int16_t)low_threshold_reg.read() * TMP117_RESOLUTION;
+}
+
+/**
+ * @brief Set a new low temperature threshold
+ *
+ * @param low_threshold The new threshold to be set, in degrees C. An alert will
+ * trigger when the current temperature measurement is lower than the given
+ * threshold.
+ * @return true:success false: failure
+ */
+bool Adafruit_TMP117::setLowThreshold(float low_threshold) {
+  Adafruit_BusIO_Register low_threshold_reg =
+      Adafruit_BusIO_Register(i2c_dev, TMP117_T_LOW_LIMIT, 2, MSBFIRST);
+
+  return low_threshold_reg.write(low_threshold / TMP117_RESOLUTION);
+}
+
+/**
+ * @brief Read the current high temperature threshold
+ *
+ * @return float The  current high temperature threshold in degrees C
+ */
+float Adafruit_TMP117::getHighThreshold(void) {
+  Adafruit_BusIO_Register high_threshold_reg =
+      Adafruit_BusIO_Register(i2c_dev, TMP117_T_HIGH_LIMIT, 2, MSBFIRST);
+
+  return (int16_t)high_threshold_reg.read() * TMP117_RESOLUTION;
+}
+
+/**
+ * @brief Set a new high temperature threshold
+ *
+ * @param high_threshold The new threshold to be set, in degrees C. An alert
+ * will trigger when the current temperature measurement is higher than the
+ * given threshold.
+ * @return true:success false: failure
+ */
+bool Adafruit_TMP117::setHighThreshold(float high_threshold) {
+  Adafruit_BusIO_Register high_threshold_reg =
+      Adafruit_BusIO_Register(i2c_dev, TMP117_T_HIGH_LIMIT, 2, MSBFIRST);
+
+  return high_threshold_reg.write(high_threshold / TMP117_RESOLUTION);
 }
 
 /**
@@ -164,38 +251,6 @@ void Adafruit_TMP117::setDataRate(tmp117_rate_t new_data_rate) {
   data_rate.write((uint8_t)new_data_rate);
 }
 
-// /******************* Adafruit_Sensor functions *****************/
-// /*!
-//  *     @brief  Updates the measurement data for all sensors simultaneously
-//  */
-// /**************************************************************************/
-// void Adafruit_TMP117::_read(void) {
-
-// }
-
-/**************************************************************************/
-/*!
-    @brief  Gets the pressure sensor and temperature values as sensor events
-
-    @param  temp Sensor event object that will be populated with temp data
-    @returns True
-*/
-/**************************************************************************/
-bool Adafruit_TMP117::getEvent(sensors_event_t *temp) {
-  uint32_t t = millis();
-
-  unscaled_temp = (int16_t)temp_reg->read();
-
-  // use helpers to fill in the events
-  memset(temp, 0, sizeof(sensors_event_t));
-  temp->version = sizeof(sensors_event_t);
-  temp->sensor_id = _sensorid_temp;
-  temp->type = SENSOR_TYPE_AMBIENT_TEMPERATURE;
-  temp->timestamp = t;
-  temp->temperature = (unscaled_temp * TMP117_RESOLUTION);
-  return true;
-}
-
 /**
  * @brief Sets the polarity of the INT pin.
  *
@@ -208,12 +263,24 @@ void Adafruit_TMP117::interruptsActiveLow(bool active_low) {
   active_low_bit.write(active_low);
 }
 
+/**
+ * @brief Read the current temperature offset
+ *
+ * @return float The currently set temperature offset.
+ */
 float Adafruit_TMP117::getOffset(void) {
   Adafruit_BusIO_Register temp_offset_reg =
       Adafruit_BusIO_Register(i2c_dev, TMP117_TEMP_OFFSET, 2, MSBFIRST);
   return temp_offset_reg.read() * TMP117_RESOLUTION;
 }
 
+/**
+ * @brief Write a new temperature offset.
+ *
+ * @param offset The new temperature offset in degrees C. When set, the given
+ * offset will be added to all future temperature reads reported by `getEvent`
+ * @return true: success false: failure
+ */
 bool Adafruit_TMP117::setOffset(float offset) {
   if ((offset > 256.0) || (offset < -256.0)) {
     return false;
@@ -226,4 +293,33 @@ bool Adafruit_TMP117::setOffset(float offset) {
   if (success)
     waitForData();
   return success;
+}
+///////////////////  Misc private methods //////////////////////////////
+void Adafruit_TMP117::waitForData(void) {
+  while (!getDataReady()) {
+    delay(1);
+  }
+}
+
+bool Adafruit_TMP117::getDataReady(void) {
+  readAlertsDRDY();
+  return alert_drdy_flags.data_ready;
+}
+
+void Adafruit_TMP117::readAlertsDRDY(void) {
+  Adafruit_BusIO_RegisterBits alert_drdy_bits =
+      Adafruit_BusIO_RegisterBits(config_reg, 3, 13);
+  uint8_t alert_bits = alert_drdy_bits.read();
+
+  if (alert_drdy_flags.data_ready) {
+  }
+
+  alert_drdy_flags.data_ready = (alert_bits & DRDY_ALRT_FLAG) > 0;
+
+  // drdy means a new read finished, verifies that the alert values
+  // match the currently reported temperature
+  if (alert_drdy_flags.data_ready) {
+    alert_drdy_flags.high = (alert_bits & HIGH_ALRT_FLAG) > 0;
+    alert_drdy_flags.low = (alert_bits & LOW_ALRT_FLAG) > 0;
+  }
 }

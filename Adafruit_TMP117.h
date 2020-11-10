@@ -37,7 +37,10 @@
 #define TMP117_DEVICE_ID 0x0F     ///< Device ID register
 #define WHOAMI_ANSWER 0x0117      ///< Correct 2-byte ID register value response
 
-#define DRDY_FLAG 0b001 ///< mask to check data ready flag
+#define HIGH_ALRT_FLAG 0b100 ///< mask to check high threshold alert
+#define LOW_ALRT_FLAG 0b010  ///< mask to check low threshold alert
+#define DRDY_ALRT_FLAG 0b001 ///< mask to check data ready flag
+
 #define TMP117_RESOLUTION                                                      \
   0.0078125f ///< Scalar to convert from LSB value to degrees C
 
@@ -47,6 +50,7 @@
 // #define TMP117_EEPROM3 0x08
 
 ///////////////////////////////////////////////////////////////
+
 /**
  * @brief
  *
@@ -54,11 +58,19 @@
  */
 typedef enum {
   TMP117_RATE_ONE_SHOT,
-  TMP117_RATE_1_HZ,
-  TMP117_RATE_7_HZ,
-  TMP117_RATE_12_5_HZ,
-  TMP117_RATE_25_HZ,
 } tmp117_rate_t;
+
+/**
+ * @brief A struct to hold alert state information.
+ *
+ * The alert state register is auto-clearing and so must be read together
+ *
+ */
+typedef struct {
+  bool high;       ///< Status of the high temperature alert
+  bool low;        ///< Status of the low temperature alert
+  bool data_ready; ///< Status of the data_ready alert
+} tmp117_alerts_t;
 
 /*!
  *    @brief  Class that stores state and functions for interacting with
@@ -74,24 +86,29 @@ public:
 
   void reset(void);
   void interruptsActiveLow(bool active_low);
-  bool getDataReady(void);
-
   tmp117_rate_t getDataRate(void);
 
   void setDataRate(tmp117_rate_t data_rate);
   bool getEvent(sensors_event_t *temp);
+  bool getAlerts(tmp117_alerts_t *alerts);
 
-  bool setOffset(float offset);
   float getOffset(void);
+  bool setOffset(float offset);
+
+  float getLowThreshold(void);
+  bool setLowThreshold(float low_threshold);
+
+  float getHighThreshold(void);
+  bool setHighThreshold(float high_threshold);
 
 private:
   // void _read(void);
   bool _init(int32_t sensor_id);
-  uint8_t alert_drdy_flags =
-      0;               ///< Storage for self-cleared bits in config reg.
-  float unscaled_temp; ///< Last reading's temperature (C) before scaling
-
   uint16_t _sensorid_temp; ///< ID number for temperature
+
+  tmp117_alerts_t
+      alert_drdy_flags; ///< Storage for self-cleared bits in config reg.
+  float unscaled_temp;  ///< Last reading's temperature (C) before scaling
 
   Adafruit_I2CDevice *i2c_dev = NULL; ///< Pointer to I2C bus interface
   Adafruit_BusIO_Register *config_reg =
@@ -100,6 +117,7 @@ private:
       NULL; ///< Temperature register, used regularly
 
   void readAlertsDRDY(void);
+  bool getDataReady(void);
   void waitForData(void);
 };
 

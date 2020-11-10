@@ -18,14 +18,14 @@ void setup(void) {
   Serial.println("TMP117 Found!");
 
   sensors_event_t temp;
-  tmp117.getEvent(&temp);// get pressure
+  tmp117.getEvent(&temp);// get temperature
   Serial.print("Temperature without offset:"); Serial.print(temp.temperature);Serial.println(" C");
   tmp117.setOffset(TMP_OFFSET);
 }
 void loop() {
 
   sensors_event_t temp;
-  tmp117.getEvent(&temp);// get pressure
+  tmp117.getEvent(&temp);// get temperature
   Serial.print("Temperature with "); Serial.print(TMP_OFFSET, 1); Serial.print(" offset: ");Serial.print(temp.temperature);Serial.println(" degrees C");
   Serial.println("");
 

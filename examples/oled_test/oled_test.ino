@@ -34,10 +34,23 @@ void loop() {
   display.setCursor(0,0);
 
   sensors_event_t temp;
-  tmp117.getEvent(&temp);// get pressure
+  tmp117.getEvent(&temp);// get temperature
   Serial.print("Temperature: ");Serial.print(temp.temperature);Serial.println(" degrees C");
   Serial.println("");
 
   display.print("Tmp:"); display.print(temp.temperature, 1);display.println(" C");
+  display.print("HI:"); 
+  if(alerts.high_triggered){
+    display.println("Y");
+  } else {
+    display.println("N");
+  }
+  display.print("LOW:"); 
+  if(alerts.low_triggered){
+    display.println("Y");
+  } else {
+    display.println("N");
+  }
+
   display.display();
 }
