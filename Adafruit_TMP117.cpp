@@ -1,25 +1,24 @@
 /*!
  *  @file Adafruit_TMP117.cpp
  *
- *  @mainpage Adafruit  Arduino library for the TMP117 high-accuracy temperature
- * sensor
+ *  @mainpage Adafruit  Arduino library for the TMP117 high-accuracy temperature sensor
  *
  *  @section intro_sec Introduction
  *
  * 	I2C Driver for the Library for the TMP117 High-Accurac Temperature
  * Sensor
  *
- * 	This is a library for the Adafruit TMP117 breakout:
- * 	https://www.adafruit.com/product/4821
+ * This is a library for the Adafruit TMP117 breakout:
+ * https://www.adafruit.com/product/4821
  *
- * 	Adafruit invests time and resources providing this open source code,
- *  please support Adafruit and open-source hardware by purchasing products from
- * 	Adafruit!
+ * Adafruit invests time and resources providing this open source code.
+ * Please support Adafruit and open-source hardware by purchasing products from
+ * Adafruit!
  *
  *  @section dependencies Dependencies
- *  This library depends on the Adafruit BusIO library
+ *  This library depends on the Adafruit BusIO library, the Adafruit Unified Sensor library.
  *
- *  This library depends on the Adafruit Unified Sensor library
+ *  Integrated tests and examples for this library depend on the Adafruit SSD1306 library
  *
  *  @section author Author
  *
@@ -28,10 +27,7 @@
  * 	@section license License
  *
  * 	BSD (see license.txt)
- *
- * 	@section  HISTORY
- *
- *     v1.0 - First release
+
  */
 
 #include "Arduino.h"
