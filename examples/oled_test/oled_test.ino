@@ -1,4 +1,14 @@
 
+/**
+ * @file oled_test.ino
+ * @author Bryan Siepert for Adafruit Industries
+ * @brief A simple demo that displays the measurements and alert status to
+ * an attached 128x32 OLED screen
+ * @date 2020-11-10
+ *
+ * @copyright Copyright (c) 2020
+ *
+ */
 #include <Wire.h>
 #include <Adafruit_TMP117.h>
 #include <Adafruit_Sensor.h>
@@ -30,27 +40,40 @@ void setup(void) {
   display.setRotation(0);
 }
 void loop() {
+  // Clear the display to be updated with new readings
   display.clearDisplay();
   display.setCursor(0,0);
 
+  tmp117_alerts_t alerts;
   sensors_event_t temp;
-  tmp117.getEvent(&temp);// get temperature
+
+  // Reading temp clears alerts, so read alerts first
+  tmp117.getAlerts(&alerts);
+  tmp117.getEvent(&temp);
+
   Serial.print("Temperature: ");Serial.print(temp.temperature);Serial.println(" degrees C");
   Serial.println("");
 
-  display.print("Tmp:"); display.print(temp.temperature, 1);display.println(" C");
-  display.print("HI:"); 
-  if(alerts.high_triggered){
+  //       Print to OLED
+  display.print("Tmp:");
+  display.print(temp.temperature, 1);
+  display.println(" C");
+
+  display.print("HI:");
+  if (alerts.high) {
+    display.print("Y");
+  } else {
+    display.print("N");
+  }
+
+  display.print(" LOW:");
+  if (alerts.low) {
     display.println("Y");
   } else {
     display.println("N");
   }
-  display.print("LOW:"); 
-  if(alerts.low_triggered){
-    display.println("Y");
-  } else {
-    display.println("N");
-  }
+
+  display.display();
 
   display.display();
 }

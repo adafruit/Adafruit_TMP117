@@ -1,8 +1,7 @@
 /**
- * @file offset_test.ino
+ * @file basic_test.ino
  * @author Bryan Siepert for Adafruit Industries
- * @brief Shows how to specify a temperature offset to adjust for bias in the measuremets due to
- * the enviromnent or other factors.
+ * @brief Shows how to specify a
  * @date 2020-11-10
  * 
  * @copyright Copyright (c) 2020
@@ -11,7 +10,6 @@
 #include <Wire.h>
 #include <Adafruit_TMP117.h>
 #include <Adafruit_Sensor.h>
-#define TMP_OFFSET 10.4f
 
 Adafruit_TMP117  tmp117;
 void setup(void) {
@@ -26,16 +24,12 @@ void setup(void) {
   }
   Serial.println("TMP117 Found!");
 
-  sensors_event_t temp;
-  tmp117.getEvent(&temp);// get temperature
-  Serial.print("Temperature without offset:"); Serial.print(temp.temperature);Serial.println(" C");
-  tmp117.setOffset(TMP_OFFSET);
 }
 void loop() {
 
-  sensors_event_t temp;
-  tmp117.getEvent(&temp);// get temperature
-  Serial.print("Temperature with "); Serial.print(TMP_OFFSET, 1); Serial.print(" offset: ");Serial.print(temp.temperature);Serial.println(" degrees C");
+  sensors_event_t temp; // create an empty event to be filled
+  tmp117.getEvent(&temp); //fill the empty event object with the current measurements
+  Serial.print("Temperature  "); Serial.print(temp.temperature);Serial.println(" degrees C");
   Serial.println("");
 
   delay(1000);

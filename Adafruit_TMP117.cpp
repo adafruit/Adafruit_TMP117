@@ -1,7 +1,8 @@
 /*!
  *  @file Adafruit_TMP117.cpp
  *
- *  @mainpage Adafruit  Arduino library for the TMP117 high-accuracy temperature sensor
+ *  @mainpage Adafruit  Arduino library for the TMP117 high-accuracy temperature
+ sensor
  *
  *  @section intro_sec Introduction
  *
@@ -16,9 +17,11 @@
  * Adafruit!
  *
  *  @section dependencies Dependencies
- *  This library depends on the Adafruit BusIO library, the Adafruit Unified Sensor library.
+ *  This library depends on the Adafruit BusIO library, the Adafruit Unified
+ Sensor library.
  *
- *  Integrated tests and examples for this library depend on the Adafruit SSD1306 library
+ *  Integrated tests and examples for this library depend on the Adafruit
+ SSD1306 library
  *
  *  @section author Author
  *
