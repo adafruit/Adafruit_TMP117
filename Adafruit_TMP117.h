@@ -139,12 +139,10 @@ public:
 
   bool begin(uint8_t i2c_addr = TMP117_I2CADDR_DEFAULT, TwoWire *wire = &Wire,
              int32_t sensor_id = 117);
-
   void reset(void);
   void interruptsActiveLow(bool active_low);
-  tmp117_rate_t getDataRate(void);
+  bool interruptsActiveLow(void);
 
-  void setDataRate(tmp117_rate_t data_rate);
   bool getEvent(sensors_event_t *temp);
   bool getAlerts(tmp117_alerts_t *alerts);
 

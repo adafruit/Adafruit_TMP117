@@ -224,34 +224,6 @@ bool Adafruit_TMP117::setHighThreshold(float high_threshold) {
 }
 
 /**
- * @brief Gets the current rate at which pressure and temperature measurements
- * are taken
- *
- * @return tmp117_rate_t The current data rate
- */
-tmp117_rate_t Adafruit_TMP117::getDataRate(void) {
-  Adafruit_BusIO_Register config =
-      Adafruit_BusIO_Register(i2c_dev, TMP117_CONFIGURATION, 1);
-  Adafruit_BusIO_RegisterBits data_rate =
-      Adafruit_BusIO_RegisterBits(config_reg, 3, 4);
-  // _raw_measurement_delay = RWBits(3, _CONFIGURATION, 7, 2, False)
-
-  return (tmp117_rate_t)data_rate.read();
-}
-/**
- * @brief Sets the rate at which pressure and temperature measurements
- *
- * @param new_data_rate The data rate to set. Must be a `tmp117_rate_t`
- */
-void Adafruit_TMP117::setDataRate(tmp117_rate_t new_data_rate) {
-
-  Adafruit_BusIO_RegisterBits data_rate =
-      Adafruit_BusIO_RegisterBits(config_reg, 3, 4);
-
-  data_rate.write((uint8_t)new_data_rate);
-}
-
-/**
  * @brief Sets the polarity of the INT pin.
  *
  * @param active_low Set to true to make the pin active low
@@ -263,6 +235,20 @@ void Adafruit_TMP117::interruptsActiveLow(bool active_low) {
   active_low_bit.write(active_low);
 }
 
+/**
+ * @brief Get the polarity of the INT pin.
+ *
+ * @return active_low
+ *
+ * true: INT pin is active when low
+ * false: INT pin is active when high
+ */
+bool Adafruit_TMP117::interruptsActiveLow(void) {
+
+  Adafruit_BusIO_RegisterBits active_low_bit =
+      Adafruit_BusIO_RegisterBits(config_reg, 1, 3);
+  return active_low_bit.read();
+}
 /**
  * @brief Read the current temperature offset
  *
@@ -294,6 +280,8 @@ bool Adafruit_TMP117::setOffset(float offset) {
     waitForData();
   return success;
 }
+
+
 
 /**
  * @brief Enable or disable "THERM" alert mode

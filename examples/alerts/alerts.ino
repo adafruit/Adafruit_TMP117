@@ -51,6 +51,15 @@ void setup(void) {
   tmp117.setLowThreshold(28.5);
   Serial.print("Low threshold: "); Serial.println(tmp117.getLowThreshold(), 1);
 
+  // tmp117.interruptsActiveLow(false);
+  if(tmp117.interruptsActiveLow()){
+    Serial.println("Alerts are active when the INT pin is LOW");
+  } else {
+    Serial.println("Alerts are active when the INT pin is HIGH");
+  }
+
+  Serial.println("");
+  Serial.println("");
 }
 
 void loop() {
