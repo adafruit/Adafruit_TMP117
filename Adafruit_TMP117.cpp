@@ -29,7 +29,7 @@
  *
  * 	@section license License
  *
- * 	BSD (see license.txt)
+ * 	BSD (see license.txt)w
 
  */
 
@@ -322,7 +322,7 @@ bool Adafruit_TMP117::thermAlertModeEnabled(void) {
 tmp117_average_count_t Adafruit_TMP117::getAveragedSampleCount(void) {
   Adafruit_BusIO_RegisterBits average_count_bits =
       Adafruit_BusIO_RegisterBits(config_reg, 2, 5);
-  return average_count_bits.read();
+  return (tmp117_average_count_t)average_count_bits.read();
 }
 
 /**
@@ -354,7 +354,7 @@ bool Adafruit_TMP117::setAveragedSampleCount(tmp117_average_count_t count) {
 tmp117_delay_t Adafruit_TMP117::getReadDelay(void) {
   Adafruit_BusIO_RegisterBits read_delay_bits =
       Adafruit_BusIO_RegisterBits(config_reg, 3, 7);
-  return read_delay_bits.read();
+  return (tmp117_delay_t)read_delay_bits.read();
 }
 /**
  * @brief Set a new minimum delay between calculated reads
@@ -378,7 +378,7 @@ bool Adafruit_TMP117::setReadDelay(tmp117_delay_t delay) {
 tmp117_mode_t Adafruit_TMP117::getMeasurementMode(void) {
   Adafruit_BusIO_RegisterBits mode_bits =
       Adafruit_BusIO_RegisterBits(config_reg, 2, 10);
-  return mode_bits.read();
+  return (tmp117_mode_t)mode_bits.read();
 }
 
 /**
@@ -410,9 +410,6 @@ void Adafruit_TMP117::readAlertsDRDY(void) {
   Adafruit_BusIO_RegisterBits alert_drdy_bits =
       Adafruit_BusIO_RegisterBits(config_reg, 3, 13);
   uint8_t alert_bits = alert_drdy_bits.read();
-
-  if (alert_drdy_flags.data_ready) {
-  }
 
   alert_drdy_flags.data_ready = (alert_bits & DRDY_ALRT_FLAG) > 0;
 
