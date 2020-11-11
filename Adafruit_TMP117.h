@@ -188,5 +188,3 @@ private:
 };
 
 #endif
-
-// measurement_mode(self):

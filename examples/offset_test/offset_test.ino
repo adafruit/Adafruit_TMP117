@@ -1,4 +1,13 @@
-
+/**
+ * @file offset_test.ino
+ * @author Bryan Siepert for Adafruit Industries
+ * @brief Shows how to specify a temperature offset to adjust for bias in the measuremets due to
+ * the enviromnent or other factors.
+ * @date 2020-11-10
+ * 
+ * @copyright Copyright (c) 2020
+ * 
+ */
 #include <Wire.h>
 #include <Adafruit_TMP117.h>
 #include <Adafruit_Sensor.h>

@@ -1,4 +1,12 @@
-
+/**
+ * @file alerts.ino
+ * @author Bryan Siepert for Adafruit Industries
+ * @brief Show how to set adjust and use the sensor's included alert settings
+ * @date 2020-11-10
+ * 
+ * @copyright Copyright (c) 2020
+ * 
+ */
 #include <Adafruit_SSD1306.h>
 #include <Adafruit_Sensor.h>
 #include <Adafruit_TMP117.h>

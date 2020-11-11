@@ -281,8 +281,6 @@ bool Adafruit_TMP117::setOffset(float offset) {
   return success;
 }
 
-
-
 /**
  * @brief Enable or disable "THERM" alert mode
  *
