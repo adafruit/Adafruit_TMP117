@@ -6,7 +6,7 @@
  *
  *  @section intro_sec Introduction
  *
- * 	I2C Driver for the Library for the TMP117 High-Accurac Temperature
+ * 	I2C Driver for the Library for the TMP117 High-Accuracy Temperature
  * Sensor
  *
  * This is a library for the Adafruit TMP117 breakout:
@@ -29,7 +29,7 @@
  *
  * 	@section license License
  *
- * 	BSD (see license.txt)w
+ * 	BSD (see license.txt)
 
  */
 
