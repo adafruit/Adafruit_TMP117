@@ -3,7 +3,9 @@
 
 This is the Adafruit TMP117 Arduino Library for Arduino
 Tested and works great with the Adafruit TMP117 Breakout Board
-[<img src="assets/board.png?raw=true" width="500px">](https://www.adafruit.com/products/4821)
+
+[<img src="https://cdn-shop.adafruit.com/1200x900/4821-04.jpg" width="500px">](https://www.adafruit.com/products/4821)
+
 Adafruit invests time and resources providing this open source code, please support Adafruit and open-source hardware by purchasing products from Adafruit!
 
 # Installation
