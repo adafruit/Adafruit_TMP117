@@ -9,9 +9,7 @@
  * @copyright Copyright (c) 2020
  *
  */
-#include <Wire.h>
 #include <Adafruit_TMP117.h>
-#include <Adafruit_Sensor.h>
 #include <Adafruit_SSD1306.h>
 
 Adafruit_SSD1306 display = Adafruit_SSD1306(128, 32, &Wire);
@@ -19,7 +17,9 @@ Adafruit_SSD1306 display = Adafruit_SSD1306(128, 32, &Wire);
 Adafruit_TMP117  tmp117;
 void setup(void) {
   Serial.begin(115200);
-  while (!Serial) delay(10);     // will pause Zero, Leonardo, etc until serial console opens
+
+  while (!Serial) 
+     delay(10);     // will pause Zero, Leonardo, etc until serial console opens
   Serial.println("Adafruit TMP117 test!");
 
   // Try to initialize!
@@ -31,7 +31,7 @@ void setup(void) {
 
   if(!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) { // Address 0x3C for 128x32
     Serial.println(F("SSD1306 allocation failed"));
-    for(;;); // Don't proceed, loop forever
+    while (1) { delay(10); } // Don't proceed, loop forever
   }
   display.clearDisplay();
   display.display();
@@ -39,6 +39,8 @@ void setup(void) {
   display.setTextColor(WHITE);
   display.setRotation(0);
 }
+
+
 void loop() {
   // Clear the display to be updated with new readings
   display.clearDisplay();
@@ -51,7 +53,9 @@ void loop() {
   tmp117.getAlerts(&alerts);
   tmp117.getEvent(&temp);
 
-  Serial.print("Temperature: ");Serial.print(temp.temperature);Serial.println(" degrees C");
+  Serial.print("Temperature: ");
+  Serial.print(temp.temperature);
+  Serial.println(" degrees C");
   Serial.println("");
 
   //       Print to OLED
@@ -72,8 +76,6 @@ void loop() {
   } else {
     display.println("N");
   }
-
-  display.display();
 
   display.display();
 }
