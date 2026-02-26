@@ -31,6 +31,10 @@ void setup(void) {
 
 }
 void loop() {
+  // Wait for fresh data before reading
+  while (!tmp11x.dataReady()) {
+    delay(10);
+  }
 
   sensors_event_t temp; // create an empty event to be filled
   tmp11x.getEvent(&temp); //fill the empty event object with the current measurements

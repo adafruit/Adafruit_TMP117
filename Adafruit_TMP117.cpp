@@ -394,14 +394,20 @@ bool Adafruit_TMP117::setMeasurementMode(tmp117_mode_t mode) {
       Adafruit_BusIO_RegisterBits(config_reg, 2, 10);
   return mode_bits.write(mode);
 }
-///////////////////  Misc private methods //////////////////////////////
+///////////////////  Misc methods //////////////////////////////
 void Adafruit_TMP117::waitForData(void) {
-  while (!getDataReady()) {
+  while (!dataReady()) {
     delay(1);
   }
 }
 
-bool Adafruit_TMP117::getDataReady(void) {
+/**
+ * @brief Check if new temperature data is ready
+ *
+ * @return true New data is available
+ * @return false No new data available yet
+ */
+bool Adafruit_TMP117::dataReady(void) {
   readAlertsDRDY();
   return alert_drdy_flags.data_ready;
 }

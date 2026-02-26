@@ -167,6 +167,8 @@ public:
   tmp117_mode_t getMeasurementMode(void);
   bool setMeasurementMode(tmp117_mode_t mode);
 
+  bool dataReady(void);
+
 protected:
   virtual bool _init(int32_t sensor_id);
   uint16_t _sensorid_temp; ///< ID number for temperature
@@ -177,6 +179,7 @@ protected:
   Adafruit_BusIO_Register *temp_reg =
       NULL; ///< Temperature register, used regularly
 
+  /*! @brief Block until new data is ready */
   void waitForData(void);
 
 private:
@@ -185,7 +188,6 @@ private:
   float unscaled_temp;  ///< Last reading's temperature (C) before scaling
 
   void readAlertsDRDY(void);
-  bool getDataReady(void);
 };
 
 #endif
