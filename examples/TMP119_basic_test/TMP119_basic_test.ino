@@ -21,16 +21,16 @@ void setup(void) {
   Serial.begin(115200);
   while (!Serial)
     delay(10); // will pause Zero, Leonardo, etc until serial console opens
-  Serial.println(F("Adafruit TMP119 test!"));
+  Serial.println(F("Adafruit TMP117/TMP119 test!"));
 
   // Try to initialize!
   if (!tmp11x.begin()) {
-    Serial.println(F("Failed to find TMP119 chip"));
+    Serial.println(F("Failed to find TMP117/TMP119 chip"));
     while (1) {
       delay(10);
     }
   }
-  Serial.println(F("TMP119 Found!"));
+  Serial.println(F("TMP117/TMP119 Found!"));
 }
 
 void loop() {
