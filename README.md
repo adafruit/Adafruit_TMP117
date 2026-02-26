@@ -1,8 +1,8 @@
-# Adafruit TMP117 [![Build Status](https://github.com/adafruit/Adafruit_TMP117/workflows/Arduino%20Library%20CI/badge.svg)](https://github.com/adafruit/Adafruit_TMP117/actions)[![Documentation](https://github.com/adafruit/ci-arduino/blob/master/assets/doxygen_badge.svg)](http://adafruit.github.io/Adafruit_TMP117/html/index.html)
+# Adafruit TMP117 & TMP119 [![Build Status](https://github.com/adafruit/Adafruit_TMP117/workflows/Arduino%20Library%20CI/badge.svg)](https://github.com/adafruit/Adafruit_TMP117/actions)[![Documentation](https://github.com/adafruit/ci-arduino/blob/master/assets/doxygen_badge.svg)](http://adafruit.github.io/Adafruit_TMP117/html/index.html)
 
 
-This is the Adafruit TMP117 Arduino Library for Arduino
-Tested and works great with the Adafruit TMP117 Breakout Board
+This is the Adafruit TMP117 and TMP119 Arduino Library for Arduino
+Tested and works great with the Adafruit TMP117 and TMP119 Breakout Boards
 
 [<img src="https://cdn-shop.adafruit.com/1200x900/4821-04.jpg" width="500px">](https://www.adafruit.com/products/4821)
 
