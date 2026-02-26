@@ -167,14 +167,11 @@ public:
   tmp117_mode_t getMeasurementMode(void);
   bool setMeasurementMode(tmp117_mode_t mode);
 
-private:
-  // void _read(void);
-  bool _init(int32_t sensor_id);
-  uint16_t _sensorid_temp; ///< ID number for temperature
+  bool dataReady(void);
 
-  tmp117_alerts_t
-      alert_drdy_flags; ///< Storage for self-cleared bits in config reg.
-  float unscaled_temp;  ///< Last reading's temperature (C) before scaling
+protected:
+  virtual bool _init(int32_t sensor_id);
+  uint16_t _sensorid_temp; ///< ID number for temperature
 
   Adafruit_I2CDevice *i2c_dev = NULL; ///< Pointer to I2C bus interface
   Adafruit_BusIO_Register *config_reg =
@@ -182,9 +179,15 @@ private:
   Adafruit_BusIO_Register *temp_reg =
       NULL; ///< Temperature register, used regularly
 
-  void readAlertsDRDY(void);
-  bool getDataReady(void);
+  /*! @brief Block until new data is ready */
   void waitForData(void);
+
+private:
+  tmp117_alerts_t
+      alert_drdy_flags; ///< Storage for self-cleared bits in config reg.
+  float unscaled_temp;  ///< Last reading's temperature (C) before scaling
+
+  void readAlertsDRDY(void);
 };
 
 #endif

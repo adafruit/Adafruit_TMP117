@@ -1,20 +1,24 @@
-
 /**
  * @file oled_test.ino
  * @author Bryan Siepert for Adafruit Industries
- * @brief A simple demo that displays the measurements and alert status to
- * an attached 128x32 OLED screen
+ * @brief A simple demo that displays TMP117/TMP119 measurements and alert
+ * status to an attached 128x32 OLED screen
  * @date 2020-11-10
  *
  * @copyright Copyright (c) 2020
  *
  */
-#include <Adafruit_TMP117.h>
 #include <Adafruit_SSD1306.h>
+#include <Adafruit_TMP117.h>
+// #include <Adafruit_TMP119.h>
 
 Adafruit_SSD1306 display = Adafruit_SSD1306(128, 32, &Wire);
 
-Adafruit_TMP117  tmp117;
+Adafruit_TMP117 tmp11x;
+// Adafruit_TMP119 tmp11x;
+
+// To use with TMP119 instead, uncomment the TMP119 include/line above
+// and comment out the TMP117 include/line
 void setup(void) {
   Serial.begin(115200);
 
@@ -23,7 +27,7 @@ void setup(void) {
   Serial.println("Adafruit TMP117 test!");
 
   // Try to initialize!
-  if (!tmp117.begin()) {
+  if (!tmp11x.begin()) {
     Serial.println("Failed to find TMP117 chip");
     while (1) { delay(10); }
   }
@@ -50,8 +54,8 @@ void loop() {
   sensors_event_t temp;
 
   // Reading temp clears alerts, so read alerts first
-  tmp117.getAlerts(&alerts);
-  tmp117.getEvent(&temp);
+  tmp11x.getAlerts(&alerts);
+  tmp11x.getEvent(&temp);
 
   Serial.print("Temperature: ");
   Serial.print(temp.temperature);
