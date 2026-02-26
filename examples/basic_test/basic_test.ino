@@ -20,14 +20,14 @@ Adafruit_TMP117 tmp11x;
 void setup(void) {
   Serial.begin(115200);
   while (!Serial) delay(10);     // will pause Zero, Leonardo, etc until serial console opens
-  Serial.println("Adafruit TMP117 test!");
+  Serial.println("Adafruit TMP117/TMP119 test!");
 
   // Try to initialize!
   if (!tmp11x.begin()) {
-    Serial.println("Failed to find TMP117 chip");
+    Serial.println("Failed to find TMP117/TMP119 chip");
     while (1) { delay(10); }
   }
-  Serial.println("TMP117 Found!");
+  Serial.println("TMP117/TMP119 Found!");
 
 }
 void loop() {
