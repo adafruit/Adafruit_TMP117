@@ -1,20 +1,25 @@
 /**
  * @file alerts.ino
  * @author Bryan Siepert for Adafruit Industries
- * @brief Show how to set adjust and use the sensor's included alert settings
+ * @brief Show how to set adjust and use the TMP117/TMP119 alert settings
  * @date 2020-11-10
- * 
+ *
  * @copyright Copyright (c) 2020
- * 
+ *
  */
 #include <Adafruit_SSD1306.h>
 #include <Adafruit_Sensor.h>
 #include <Adafruit_TMP117.h>
+// #include <Adafruit_TMP119.h>
 #include <Wire.h>
 
 Adafruit_SSD1306 display = Adafruit_SSD1306(128, 32, &Wire);
 
 Adafruit_TMP117 tmp117;
+// Adafruit_TMP119 tmp119;
+
+// To use with TMP119 instead, uncomment the TMP119 lines above
+// and comment out the TMP117 lines, then replace tmp117 with tmp119 below
 void setup(void) {
   Serial.begin(115200);
   while (!Serial)

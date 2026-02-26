@@ -1,21 +1,25 @@
 /**
- * @file average_counts.ino
+ * @file measurement_settings.ino
  * @author Bryan Siepert for Adafruit Industries
- * @brief Demonstrates the different settings that can be adjusted to
- * change the behavior of the sensor, including measurement averaging,
+ * @brief Demonstrates the different TMP117/TMP119 settings that can be adjusted
+ * to change the behavior of the sensor, including measurement averaging,
  * interval between readings, setting an offset, and measurement mode
  * @date 2020-11-10
- * 
+ *
  * @copyright Copyright (c) 2020
- * 
+ *
  */
 
-#include <Wire.h>
-#include <Adafruit_TMP117.h>
 #include <Adafruit_Sensor.h>
+#include <Adafruit_TMP117.h>
+// #include <Adafruit_TMP119.h>
+#include <Wire.h>
 
+Adafruit_TMP117 tmp117;
+// Adafruit_TMP119 tmp119;
 
-Adafruit_TMP117  tmp117;
+// To use with TMP119 instead, uncomment the TMP119 lines above
+// and comment out the TMP117 lines, then replace tmp117 with tmp119 below
 void setup(void) {
   Serial.begin(115200);
   while (!Serial) delay(10);     // will pause Zero, Leonardo, etc until serial console opens

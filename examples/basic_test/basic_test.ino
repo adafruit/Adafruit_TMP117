@@ -1,17 +1,22 @@
 /**
  * @file basic_test.ino
  * @author Bryan Siepert for Adafruit Industries
- * @brief Shows how to specify a
+ * @brief Basic temperature reading example for TMP117/TMP119
  * @date 2020-11-10
- * 
+ *
  * @copyright Copyright (c) 2020
- * 
+ *
  */
-#include <Wire.h>
-#include <Adafruit_TMP117.h>
 #include <Adafruit_Sensor.h>
+#include <Adafruit_TMP117.h>
+// #include <Adafruit_TMP119.h>
+#include <Wire.h>
 
-Adafruit_TMP117  tmp117;
+Adafruit_TMP117 tmp117;
+// Adafruit_TMP119 tmp119;
+
+// To use with TMP119 instead, uncomment the TMP119 lines above
+// and comment out the TMP117 lines, then replace tmp117 with tmp119 below
 void setup(void) {
   Serial.begin(115200);
   while (!Serial) delay(10);     // will pause Zero, Leonardo, etc until serial console opens
