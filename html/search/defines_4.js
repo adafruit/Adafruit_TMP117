@@ -9,5 +9,6 @@ var searchData=
   ['tmp117_5ft_5flow_5flimit',['TMP117_T_LOW_LIMIT',['../_adafruit___t_m_p117_8h.html#a6fb313828bb1f190e2d6a0e90969ffe2',1,'Adafruit_TMP117.h']]],
   ['tmp117_5ftemp_5fdata',['TMP117_TEMP_DATA',['../_adafruit___t_m_p117_8h.html#aeaeb68405dd5cd8cd6abd784f06e7abd',1,'Adafruit_TMP117.h']]],
   ['tmp117_5ftemp_5foffset',['TMP117_TEMP_OFFSET',['../_adafruit___t_m_p117_8h.html#a0da0b970deb4e146634dfcf79fbfb0cb',1,'Adafruit_TMP117.h']]],
-  ['tmp117_5fwhoami',['TMP117_WHOAMI',['../_adafruit___t_m_p117_8h.html#afffdd100b93a7b25780814099b0aabe7',1,'Adafruit_TMP117.h']]]
+  ['tmp117_5fwhoami',['TMP117_WHOAMI',['../_adafruit___t_m_p117_8h.html#afffdd100b93a7b25780814099b0aabe7',1,'Adafruit_TMP117.h']]],
+  ['tmp119_5fchip_5fid',['TMP119_CHIP_ID',['../_adafruit___t_m_p119_8h.html#a3edd74d9b43180cf454d23ec8f810710',1,'Adafruit_TMP119.h']]]
 ];

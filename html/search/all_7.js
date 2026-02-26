@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['low',['low',['../structtmp117__alerts__t.html#a180b3746e08fbdcf1213a4b60380f72a',1,'tmp117_alerts_t']]],
-  ['low_5falrt_5fflag',['LOW_ALRT_FLAG',['../_adafruit___t_m_p117_8h.html#a2a4e42564feae8d334f10263b6859b69',1,'Adafruit_TMP117.h']]]
+  ['i2c_5fdev',['i2c_dev',['../class_adafruit___t_m_p117.html#ae940f4d85c99f78dfb3ccdb7f8901183',1,'Adafruit_TMP117']]],
+  ['interruptsactivelow',['interruptsActiveLow',['../class_adafruit___t_m_p117.html#a4f860d351c77f53de35453c9e372d57e',1,'Adafruit_TMP117::interruptsActiveLow(bool active_low)'],['../class_adafruit___t_m_p117.html#ab5a0ae09efcb9cd4909bf4ad238e46fe',1,'Adafruit_TMP117::interruptsActiveLow(void)']]]
 ];

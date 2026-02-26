@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['high',['high',['../structtmp117__alerts__t.html#a8dc6302be3ceb9911ff37cefacb6c209',1,'tmp117_alerts_t']]]
+  ['config_5freg',['config_reg',['../class_adafruit___t_m_p117.html#a4c7e566afe07573bfa7270ba2b80ff54',1,'Adafruit_TMP117']]]
 ];
