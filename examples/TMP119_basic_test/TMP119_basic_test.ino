@@ -11,11 +11,11 @@
 #include <Adafruit_TMP119.h>
 #include <Wire.h>
 
-// Adafruit_TMP117 tmp117;
-Adafruit_TMP119 tmp119;
+// Adafruit_TMP117 tmp11x;
+Adafruit_TMP119 tmp11x;
 
-// To use with TMP117 instead, uncomment the TMP117 lines above
-// and comment out the TMP119 lines, then replace tmp119 with tmp117 below
+// To use with TMP117 instead, uncomment the TMP117 include/line above
+// and comment out the TMP119 include/line
 
 void setup(void) {
   Serial.begin(115200);
@@ -24,7 +24,7 @@ void setup(void) {
   Serial.println(F("Adafruit TMP119 test!"));
 
   // Try to initialize!
-  if (!tmp119.begin()) {
+  if (!tmp11x.begin()) {
     Serial.println(F("Failed to find TMP119 chip"));
     while (1) {
       delay(10);
@@ -35,7 +35,7 @@ void setup(void) {
 
 void loop() {
   sensors_event_t temp; // create an empty event to be filled
-  tmp119.getEvent(
+  tmp11x.getEvent(
       &temp); // fill the empty event object with the current measurements
   Serial.print(F("Temperature  "));
   Serial.print(temp.temperature);

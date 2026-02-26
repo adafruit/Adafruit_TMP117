@@ -15,11 +15,11 @@
 
 Adafruit_SSD1306 display = Adafruit_SSD1306(128, 32, &Wire);
 
-Adafruit_TMP117 tmp117;
-// Adafruit_TMP119 tmp119;
+Adafruit_TMP117 tmp11x;
+// Adafruit_TMP119 tmp11x;
 
-// To use with TMP119 instead, uncomment the TMP119 lines above
-// and comment out the TMP117 lines, then replace tmp117 with tmp119 below
+// To use with TMP119 instead, uncomment the TMP119 include/line above
+// and comment out the TMP117 include/line
 void setup(void) {
   Serial.begin(115200);
   while (!Serial)
@@ -27,7 +27,7 @@ void setup(void) {
   Serial.println("Adafruit TMP117 test!");
 
   // Try to initialize!
-  if (!tmp117.begin()) {
+  if (!tmp11x.begin()) {
     Serial.println("Failed to find TMP117 chip");
     while (1) {
       delay(10);
@@ -49,9 +49,9 @@ void setup(void) {
   // Set the enable flag below to see how the low temp limit can be used as a
   // hysteresis value that defines the acceptable range for the temperature values where
   // the high temp alert is not active
-  // tmp117.thermAlertModeEnabled(true);
+  // tmp11x.thermAlertModeEnabled(true);
   Serial.print("Therm mode enabled: ");
-  if (tmp117.thermAlertModeEnabled()) {
+  if (tmp11x.thermAlertModeEnabled()) {
     Serial.println("True");
   } else {
     Serial.println("False");
@@ -59,13 +59,13 @@ void setup(void) {
 
   // You may need to adjust these thresholds to fit the temperature range of where the test is
   // being run to be able to see the alert status change.
-  tmp117.setHighThreshold(35.0);
-  Serial.print("High threshold: "); Serial.println(tmp117.getHighThreshold(), 1);
-  tmp117.setLowThreshold(28.5);
-  Serial.print("Low threshold: "); Serial.println(tmp117.getLowThreshold(), 1);
+  tmp11x.setHighThreshold(35.0);
+  Serial.print("High threshold: "); Serial.println(tmp11x.getHighThreshold(), 1);
+  tmp11x.setLowThreshold(28.5);
+  Serial.print("Low threshold: "); Serial.println(tmp11x.getLowThreshold(), 1);
 
-  // tmp117.interruptsActiveLow(false);
-  if(tmp117.interruptsActiveLow()){
+  // tmp11x.interruptsActiveLow(false);
+  if(tmp11x.interruptsActiveLow()){
     Serial.println("Alerts are active when the INT pin is LOW");
   } else {
     Serial.println("Alerts are active when the INT pin is HIGH");
@@ -82,8 +82,8 @@ void loop() {
   tmp117_alerts_t alerts;
   sensors_event_t temp;
   // Reading temp clears alerts, so read alerts first
-  tmp117.getAlerts(&alerts); // get the status of any alerts
-  tmp117.getEvent(&temp);   // get temperature
+  tmp11x.getAlerts(&alerts); // get the status of any alerts
+  tmp11x.getEvent(&temp);   // get temperature
 
   Serial.print("Temperature: ");
   Serial.print(temp.temperature);
