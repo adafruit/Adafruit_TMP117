@@ -10,8 +10,7 @@
 #include <Adafruit_SSD1306.h>
 #include <Adafruit_Sensor.h>
 #include <Adafruit_TMP117.h>
-// #include <Adafruit_TMP119.h>
-#include <Wire.h>
+#include <Adafruit_TMP119.h>
 
 Adafruit_SSD1306 display = Adafruit_SSD1306(128, 32, &Wire);
 

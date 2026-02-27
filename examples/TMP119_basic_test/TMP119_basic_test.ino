@@ -7,9 +7,8 @@
  *
  */
 #include <Adafruit_Sensor.h>
-// #include <Adafruit_TMP117.h>
+#include <Adafruit_TMP117.h>
 #include <Adafruit_TMP119.h>
-#include <Wire.h>
 
 // Adafruit_TMP117 tmp11x;
 Adafruit_TMP119 tmp11x;
